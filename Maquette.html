@@ -1,0 +1,522 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mom Zoo</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Arial Rounded MT Bold', 'Arial', sans-serif;
+        }
+
+        body {
+            background-color: #e6e6e6;
+        }
+
+        .browser-window {
+            max-width: 800px;
+            margin: 20px auto;
+            background-color: #f5f5f5;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .browser-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: #f0f0f0;
+            padding: 10px 15px;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .browser-controls {
+            display: flex;
+            gap: 5px;
+        }
+
+        .browser-control {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+        }
+
+        .control-red {
+            background-color: #ff605c;
+        }
+
+        .control-green {
+            background-color: #00ca4e;
+        }
+
+        .control-amber {
+            background-color: #ffbd44;
+        }
+
+        .browser-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .browser-action {
+            width: 12px;
+            height: 12px;
+            background-color: #ddd;
+            border-radius: 50%;
+        }
+
+        .header {
+            background-color: #b3e0ff;
+            padding: 15px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .site-title {
+            font-size: 36px;
+            font-weight: bold;
+            color: #000;
+        }
+
+        .search-bar {
+            background-color: #f0f0f0;
+            border-radius: 15px;
+            padding: 5px 10px;
+            display: flex;
+            align-items: center;
+            font-size: 12px;
+            color: #666;
+        }
+
+        .navigation {
+            display: flex;
+            justify-content: space-around;
+            background-color: #f0f0f0;
+            padding: 10px 0;
+        }
+
+        .nav-item {
+            padding: 8px 15px;
+            border-radius: 15px;
+            font-size: 14px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .nav-item:nth-child(odd) {
+            background-color: #ff7f7f;
+            color: white;
+        }
+
+        .nav-item:nth-child(even) {
+            background-color: #ffd966;
+            color: black;
+        }
+
+        .nav-item:hover {
+            opacity: 0.8;
+        }
+
+        .map-container {
+            position: relative;
+            background-color: #90ee90;
+            height: 400px;
+            overflow: hidden;
+        }
+
+        .zoo-map {
+            width: 100%;
+            height: 100%;
+            position: relative;
+        }
+
+        .lake {
+            position: absolute;
+            top: 120px;
+            left: 80px;
+            width: 250px;
+            height: 150px;
+            background-color: #66b3ff;
+            border-radius: 60%;
+            transform: rotate(25deg);
+        }
+
+        .path {
+            position: absolute;
+            top: 100px;
+            left: 70px;
+            width: 450px;
+            height: 250px;
+            border: 15px solid #f5deb3;
+            border-radius: 100px;
+            background-color: transparent;
+        }
+
+        .animal {
+            position: absolute;
+            width: 50px;
+            height: 50px;
+            cursor: pointer;
+        }
+
+        .lion1 {
+            bottom: 120px;
+            left: 100px;
+            background-color: #ffcc00;
+            border-radius: 50%;
+        }
+
+        .lion2 {
+            bottom: 180px;
+            left: 180px;
+            background-color: #ffcc00;
+            border-radius: 50%;
+        }
+
+        .giraffe {
+            top: 80px;
+            right: 100px;
+            background-color: #ffcc00;
+            height: 80px;
+            border-radius: 25%;
+        }
+
+        .cow {
+            bottom: 150px;
+            right: 200px;
+            background-color: white;
+            border-radius: 40%;
+        }
+
+        .building {
+            position: absolute;
+            right: 150px;
+            top: 200px;
+            width: 100px;
+            height: 80px;
+            background-color: #ff9999;
+            border-radius: 10px;
+        }
+
+        .sidebar {
+            position: absolute;
+            right: 20px;
+            top: 200px;
+            width: 200px;
+            background-color: rgba(255, 255, 255, 0.8);
+            border-radius: 10px;
+            padding: 15px;
+        }
+
+        .sidebar-title {
+            font-size: 18px;
+            margin-bottom: 10px;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        .action-button {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            font-size: 18px;
+            cursor: pointer;
+        }
+
+        .action-button.star {
+            background-color: #4da6ff;
+        }
+
+        .action-button.t {
+            background-color: #ff6666;
+        }
+
+        .info-section {
+            margin-bottom: 15px;
+        }
+
+        .footer {
+            background-color: #f0f0f0;
+            padding: 15px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 14px;
+        }
+
+        .footer-controls {
+            display: flex;
+            gap: 10px;
+        }
+
+        .footer-button {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+        }
+
+        .footer-button.star-orange {
+            background-color: #ff9966;
+        }
+
+        .footer-button.star-blue {
+            background-color: #4da6ff;
+        }
+
+        .footer-button.star-yellow {
+            background-color: #ffcc00;
+        }
+
+        .footer-button.star-red {
+            background-color: #ff6666;
+        }
+
+        .copyright {
+            font-size: 12px;
+            color: #666;
+        }
+
+        .animal-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 15px;
+            margin-top: 15px;
+        }
+
+        .animal-card {
+            background-color: #fff;
+            border-radius: 10px;
+            padding: 15px;
+            text-align: center;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            cursor: pointer;
+            transition: transform 0.3s;
+            position: relative;
+            height: 100px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .animal-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .animal-card:nth-child(1) {
+            background-color: #79b9ff;
+        }
+
+        .animal-card:nth-child(2) {
+            background-color: #79b9ff;
+        }
+
+        .animal-card:nth-child(3) {
+            background-color: #ffd966;
+        }
+
+        .animal-card:nth-child(4) {
+            background-color: #ff7f7f;
+        }
+
+        .animal-card:nth-child(5) {
+            background-color: #ffd966;
+        }
+
+        .animal-card:nth-child(6) {
+            background-color: #ff7f7f;
+        }
+
+        .animal-card:nth-child(7) {
+            background-color: #90ee90;
+        }
+
+        .animal-card:nth-child(8) {
+            background-color: #ff9999;
+        }
+
+        .notification {
+            position: absolute;
+            top: 5px;
+            right: 5px;
+            width: 15px;
+            height: 15px;
+            background-color: #ff9966;
+            border-radius: 50%;
+        }
+
+        .animal-icon {
+            font-size: 24px;
+            margin-bottom: 5px;
+        }
+
+        .animal-name {
+            font-size: 14px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="browser-window">
+        <div class="browser-header">
+            <div class="browser-controls">
+                <div class="browser-control control-red"></div>
+                <div class="browser-control control-green"></div>
+                <div class="browser-control control-amber"></div>
+            </div>
+            <div class="browser-actions">
+                <div class="browser-action"></div>
+                <div class="browser-action"></div>
+                <div class="browser-action"></div>
+            </div>
+        </div>
+
+        <div class="header">
+            <div class="site-title">Mom Zoo</div>
+            <div class="search-bar">Rechercher...</div>
+        </div>
+
+        <div class="navigation">
+            <div class="nav-item">Accueil</div>
+            <div class="nav-item">Billets</div>
+            <div class="nav-item">Animaux</div>
+            <div class="nav-item">Plan</div>
+            <div class="nav-item">Horaires</div>
+            <div class="nav-item">Photos</div>
+        </div>
+
+        <div class="map-container">
+            <div class="zoo-map">
+                <div class="lake"></div>
+                <div class="path"></div>
+                <div class="animal lion1"></div>
+                <div class="animal lion2"></div>
+                <div class="animal giraffe"></div>
+                <div class="animal cow"></div>
+                <div class="building"></div>
+                <div class="sidebar">
+                    <div class="action-buttons">
+                        <div class="action-button star">★</div>
+                        <div class="action-button t">T</div>
+                    </div>
+                    <div class="info-section">
+                        <div class="sidebar-title">Carte interactive</div>
+                        <div class="sidebar-info">9h à 19h tous les jours</div>
+                    </div>
+                    <div class="info-section">
+                        <div class="sidebar-title">Infos</div>
+                        <div class="sidebar-info">Dernière mise à jour: 17h</div>
+                    </div>
+                    <div class="sidebar-time">18h</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer">
+            <div class="footer-controls">
+                <div class="footer-button star-orange">★</div>
+                <div class="footer-button star-blue">★</div>
+            </div>
+            <div class="copyright">— 2024 Mom ZOO — Tous droits réservés</div>
+            <div class="footer-controls">
+                <div class="footer-button star-yellow">★</div>
+                <div class="footer-button star-red">★</div>
+            </div>
+        </div>
+
+        <div class="animal-grid">
+            <div class="animal-card">
+                <div class="animal-icon">🦁</div>
+                <div class="animal-name">Lions</div>
+            </div>
+            <div class="animal-card">
+                <div class="animal-icon">🐼</div>
+                <div class="animal-name">Pandas</div>
+            </div>
+            <div class="animal-card">
+                <div class="animal-icon">🦊</div>
+                <div class="animal-name">Renards</div>
+            </div>
+            <div class="animal-card">
+                <div class="notification"></div>
+                <div class="emergency-icon">M</div>
+                <div class="emergency-text">URGENCE</div>
+            </div>
+            <div class="animal-card">
+                <div class="notification"></div>
+                <div class="animal-icon">🦒</div>
+                <div class="animal-name">Girafes</div>
+            </div>
+            <div class="animal-card">
+                <div class="animal-icon">🐯</div>
+                <div class="animal-name">Tigres</div>
+            </div>
+            <div class="animal-card">
+                <div class="animal-icon">🐘</div>
+                <div class="animal-name">Éléphants</div>
+            </div>
+            <div class="animal-card">
+                <div class="notification"></div>
+                <div class="animal-icon">🚗</div>
+                <div class="animal-name">Parking</div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Ajout d'interactivité simple
+        document.querySelectorAll('.animal-card').forEach(card => {
+            card.addEventListener('click', function() {
+                alert('Vous avez sélectionné: ' + this.querySelector('.animal-name').textContent);
+            });
+        });
+
+        document.querySelectorAll('.animal').forEach(animal => {
+            animal.addEventListener('click', function() {
+                alert('Vous avez cliqué sur un animal dans le parc!');
+            });
+        });
+
+        document.querySelectorAll('.nav-item').forEach(item => {
+            item.addEventListener('click', function() {
+                alert('Navigation vers: ' + this.textContent);
+            });
+        });
+
+        document.querySelector('.search-bar').addEventListener('click', function() {
+            const search = prompt('Que recherchez-vous?');
+            if (search) {
+                alert('Recherche de: ' + search);
+            }
+        });
+
+        // Ajouter une heure dynamique
+        function updateClock() {
+            const now = new Date();
+            const hours = now.getHours().toString().padStart(2, '0');
+            const minutes = now.getMinutes().toString().padStart(2, '0');
+            document.querySelector('.sidebar-time').textContent = `${hours}h${minutes}`;
+        }
+
+        updateClock();
+        setInterval(updateClock, 60000);
+    </script>
+</body>
+</html>
